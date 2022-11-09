@@ -279,6 +279,8 @@ Antes de continuar puede eliminar el grupo de recursos anterior para evitar gast
 1. El Balanceador de Carga es un recurso fundamental para habilitar la escalabilidad horizontal de nuestro sistema, por eso en este paso cree un balanceador de carga dentro de Azure tal cual como se muestra en la imágen adjunta.
 
 ![](images/part2/part2-lb-create.png)
+   ![image](https://user-images.githubusercontent.com/90571387/200722878-57d4f072-5e54-4573-95ba-b3c234b505c6.png)
+
 
 2. A continuación cree un *Backend Pool*, guiese con la siguiente imágen.
 
@@ -287,14 +289,21 @@ Antes de continuar puede eliminar el grupo de recursos anterior para evitar gast
 3. A continuación cree un *Health Probe*, guiese con la siguiente imágen.
 
 ![](images/part2/part2-lb-hp-create.png)
+![image](https://user-images.githubusercontent.com/90571387/200724245-5acef945-a860-4fe7-b1ce-981eeca9d55f.png)
+
 
 4. A continuación cree un *Load Balancing Rule*, guiese con la siguiente imágen.
 
 ![](images/part2/part2-lb-lbr-create.png)
+![image](https://user-images.githubusercontent.com/90571387/200725032-d8574532-9d4d-4aef-870a-9842724a0d11.png)
+
+
 
 5. Cree una *Virtual Network* dentro del grupo de recursos, guiese con la siguiente imágen.
 
 ![](images/part2/part2-vn-create.png)
+![image](https://user-images.githubusercontent.com/90571387/200727337-c5bf21b5-197c-4c7f-9710-bd0f7c5c897b.png)
+
 
 #### Crear las maquinas virtuales (Nodos)
 
@@ -334,6 +343,9 @@ forever start FibonacciApp.js
 
 Realice este proceso para las 3 VMs, por ahora lo haremos a mano una por una, sin embargo es importante que usted sepa que existen herramientas para aumatizar este proceso, entre ellas encontramos Azure Resource Manager, OsDisk Images, Terraform con Vagrant y Paker, Puppet, Ansible entre otras.
 
+![image](https://user-images.githubusercontent.com/90571387/200733333-8b12f12b-02e0-4513-8fac-c8abc0fb63fb.png)
+
+
 #### Probar el resultado final de nuestra infraestructura
 
 1. Porsupuesto el endpoint de acceso a nuestro sistema será la IP pública del balanceador de carga, primero verifiquemos que los servicios básicos están funcionando, consuma los siguientes recursos:
@@ -353,6 +365,150 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10 &
 newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
 ```
+
+## Documentación
+
+### Tiempos de Respuesta
+
+#### Timpos obtenidos realizando las pruebas con newman en cada máquina
+
+    * VM1-r1
+
+    - Tiempo: 2 minutos 27.8 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733723-df1d503b-7470-4f6c-96d2-1bef886fca4d.png)
+
+    * VM1-r2
+
+    - Tiempo: 2 minutos 28.6 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733748-5e3c174d-ec71-4fac-98e0-d672b68ddf5d.png)
+
+    * VM2-r1
+
+    - Tiempo: 2 minutos 28.4 segundos
+![image](https://user-images.githubusercontent.com/90571387/200733767-14b0fd59-2de5-43c6-8236-9a8bf6406ac1.png)
+
+    * VM2-r2
+
+    - Tiempo: 2 minutos 23.6 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733798-14ea8c92-a2df-4d88-87a0-a06c3df196b9.png)
+
+    * VM3-r1
+
+    - Tiempo: 2 minutos 23.1 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733822-ee6c4f78-215c-48ff-961b-89421cb66e3a.png)
+
+    * VM3-r2
+
+    - Tiempo: 2 minutos 27.8 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733855-aec4b881-fa27-44f8-b73d-d78304ee65b2.png)
+
+#### Timpos obtenidos realizando las pruebas con newman en cada máquina al tiempo
+
+    * VM1-r1
+
+    - Tiempo: 3 minutos 21.5 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733880-e5a7ea6d-92fd-4960-84b6-48f524c5e88f.png)
+
+    * VM1-r2
+
+    - Tiempo: 3 minutos 21.5 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733923-723caaad-9b29-4571-b316-9ee3cd774a9b.png)
+
+    * VM2-r1
+
+    - Tiempo: 3 minutos 15.9 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733959-bb950799-7a1d-45a4-9f4c-54a5fc8ee334.png)
+
+    * VM2-r2
+
+    - Tiempo: 3 minutos 19.3 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200733989-d1b3c378-3d75-429a-a240-846f77ba8031.png)
+
+    * VM3-r1
+
+    - Tiempo: 2 minutos 43.7 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200734018-352e3ec1-9436-4414-bdcc-a6f7f79b9486.png)
+
+    * VM3-r2
+
+    - Tiempo: 3 minutos 44.7 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200734057-b2433ced-3fd2-4b25-8d83-b67742bbc81b.png)
+
+
+### Peticiones Exitosas
+
+#### Resultados exitosos realizando las pruebas con newman en cada máquina
+
+![image](https://user-images.githubusercontent.com/90571387/200735027-4ff8c246-95b3-49d6-a53c-96a6b9407067.png)
+
+#### Resultados exitosos realizando las pruebas con newman en cada máquina al tiempo
+
+![image](https://user-images.githubusercontent.com/90571387/200734967-2027376c-889c-4382-a8fd-31266c4db1a5.png)
+
+- En el escalamiento vertical no se obtuvo ninguna respuesta exitosa
+
+### Costos
+
+![image](https://user-images.githubusercontent.com/90571387/200735278-23947377-0b1c-4d68-b675-b64aad76fdd7.png)
+
+
+### Resultados VM4
+
+    * VM4-r1
+
+    - Tiempo: 2 minutos 42.8 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200734235-2030deee-d1cf-4772-9f0a-fb3f68f807b7.png)
+
+    * VM4-r2
+
+    - Tiempo: 2 minutos 53.1 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200734257-f52fd422-c3e9-47b3-b8e7-c48f732ff17b.png)
+
+    * VM4-r3
+
+    - Tiempo: 2 minutos 57.6 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200734292-d1ff2e3c-09d4-4903-924c-044e40661abb.png)
+
+    * VM4-r4
+
+    - Tiempo: 3 minutos 0.1 segundos
+
+![image](https://user-images.githubusercontent.com/90571387/200734318-740d81d7-13a1-43df-a8b8-8d6e1f496bcf.png)
+
+
+#### Comportamiento de CPU
+
+    * VM1
+
+![image](https://user-images.githubusercontent.com/90571387/200734354-1e72783d-6264-4d49-ad24-706b033d0acd.png)
+
+    * VM2
+
+![image](https://user-images.githubusercontent.com/90571387/200734370-e7f120bf-bd56-46d2-8842-61547f61ccba.png)
+
+    * VM3
+
+![image](https://user-images.githubusercontent.com/90571387/200734390-3be455fd-f6a1-4f30-93c6-c76d98d4f809.png)
+
+    * VM4
+
+![image](https://user-images.githubusercontent.com/90571387/200734407-6edf68da-661f-49b8-933c-238d397c5f50.png)
+
+- La tasa de éxito aumentó con el estilo de escalabilidad horizontal, ya que además de aumentar el número de servidores que atienden las peticiones, también se creó un balanceador de carga para controlar el tráfico en la aplicación; de modo que estas solicitudes se reparten entre estas máquinas equilibradamente y se aumenta así el número de usuarios/clientes concurrentes que pueden ser atendidos.
 
 **Preguntas**
 
