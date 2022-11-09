@@ -137,30 +137,139 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALANCING_AZURE].postman_environment.json -n 10
     ```
 
+![image](https://user-images.githubusercontent.com/90571387/200712551-f6a6ff6b-daea-4e46-9ba3-11e4ff5d4181.png)
+![image](https://user-images.githubusercontent.com/90571387/200712655-7ceaf6a5-6bf9-43ed-a674-df764082424d.png)
+![image](https://user-images.githubusercontent.com/90571387/200712683-6bbc4077-9106-4f12-9515-842818bfadd1.png)
+![image](https://user-images.githubusercontent.com/90571387/200712707-132b0cec-6d9b-44c6-b080-4688329f123b.png)
+
+
 10. La cantidad de CPU consumida es bastante grande y un conjunto considerable de peticiones concurrentes pueden hacer fallar nuestro servicio. Para solucionarlo usaremos una estrategia de Escalamiento Vertical. En Azure diríjase a la sección *size* y a continuación seleccione el tamaño `B2ms`.
 
 ![Imágen 3](images/part1/part1-vm-resize.png)
 
 11. Una vez el cambio se vea reflejado, repita el paso 7, 8 y 9.
+
+     ##Con tamaño B2ms
+      
+      * 1000000
+
+         - Tiempo: 38,13 s
+         ![image](https://user-images.githubusercontent.com/90571387/200714369-904806bb-ccac-45d0-bf63-bda0fab615ce.png)
+
+
+      * 1010000
+
+         - Tiempo 27,16 s
+         ![image](https://user-images.githubusercontent.com/90571387/200714511-5c20376f-9d25-4c77-ad75-9c2bcd5ac3e7.png)
+
+       * 1020000
+
+         - Tiempo 27,64 s
+         ![image](https://user-images.githubusercontent.com/90571387/200714633-91b471f3-5c2c-42b4-bcc9-a0c92000cc71.png)
+
+       * 1030000
+
+         - Tiempo 28,25 s
+         ![image](https://user-images.githubusercontent.com/90571387/200714769-77e07e68-e9cc-481e-adbe-a047aae04fb9.png)
+
+       * 1040000
+
+         - Tiempo 28,84 s
+         ![image](https://user-images.githubusercontent.com/90571387/200715327-12639ed3-d972-4fd1-b9ec-f6770802991a.png)
+
+       * 1050000
+
+         - Tiempo 29,31 s
+         ![image](https://user-images.githubusercontent.com/90571387/200715425-e6db87fc-51b2-4ed5-85d8-c6c4ed3b159d.png)
+
+       * 1060000
+
+         - Tiempo 29,87 s
+         ![image](https://user-images.githubusercontent.com/90571387/200715617-c65dfd9f-97a1-49eb-b4c2-1f36befdc7db.png)
+
+       * 1070000
+
+         - Tiempo 30,41 s
+         ![image](https://user-images.githubusercontent.com/90571387/200715744-485510e0-cf4d-4598-8b3a-c7c9c1e69678.png)
+
+       * 1080000
+
+         - Tiempo 30,88 s
+         ![image](https://user-images.githubusercontent.com/90571387/200715861-d9a144da-790d-47f9-b9fc-9c24083e7408.png)
+
+       * 1090000   
+
+         - Tiempo 31,55 s
+         ![image](https://user-images.githubusercontent.com/90571387/200715991-9dc06e7d-7bf5-48c7-a3aa-ea662b900533.png)
+
+
+  * Consumo de CPU
+  ![image](https://user-images.githubusercontent.com/90571387/200716346-2df53bbd-2418-4a2c-8981-779188931caa.png)
+
+  * Postman
+  
+  ![image](https://user-images.githubusercontent.com/90571387/200716974-b8ff982f-1df6-41d0-ad7b-088564f546fe.png)
+  ![image](https://user-images.githubusercontent.com/90571387/200717049-5d5187bb-974c-4196-825f-a179cdb0b62e.png)
+  ![image](https://user-images.githubusercontent.com/90571387/200717084-241edc9c-17d8-4f15-9e09-06862b9348d7.png)
+  ![image](https://user-images.githubusercontent.com/90571387/200717117-80a28a76-2d22-4a97-bf7b-80b06f7311a1.png)
+
+
 12. Evalue el escenario de calidad asociado al requerimiento no funcional de escalabilidad y concluya si usando este modelo de escalabilidad logramos cumplirlo.
+   
+   RTA: Se puede Considerar que si cumple un requerimiento funcional, debido a que se ve una mejora de tiempo muy grande pasando de 10 minutos a 30 segundos, de igual manera hubo disminución en los errores de scripts en postman de 5 a 4.
+   
 13. Vuelva a dejar la VM en el tamaño inicial para evitar cobros adicionales.
 
 **Preguntas**
 
 1. ¿Cuántos y cuáles recursos crea Azure junto con la VM?
+   * En este caso se crean cuatro recursos que son: Virtual Machine, Resource Group, Public and Private IP address.
 2. ¿Brevemente describa para qué sirve cada recurso?
+   * Virtual Machine: Es un software que simula a un computador real.
+   * Resource Group: Es un contenedor que contiene recursos relacionados para una solución de Azure. El grupo de recursos incluye aquellos recursos que desea administrar como grupo.
+   * Public IP address: Las direcciones IP públicas permiten que los recursos de Internet se comuniquen de forma entrante a los recursos de Azure. Las direcciones IP públicas permiten que los recursos de Azure se comuniquen con Internet y con los servicios públicos de Azure.
+   * IP privada: Permiten la comunicación entre recursos en Azure tales como:
+      * Virtual machine network interfaces
+      * Internal load balancers (ILBs)
+      * Application gateways
+      * Virtual network.
+      * Red local a través de una pasarela VPN o un circuito ExpressRoute.
 3. ¿Al cerrar la conexión ssh con la VM, por qué se cae la aplicación que ejecutamos con el comando `npm FibonacciApp.js`? ¿Por qué debemos crear un *Inbound port rule* antes de acceder al servicio?
+   * Si se cierra la conexión ssh también se terminaran los procesos que se esten ejecutando en esa conexión, por eso es necesario ejecutarlo con forever. Porque por defecto solo esta abierto el puerto 22 por lo que las conexiones desde el resto de puertos no son aceptadas
 4. Adjunte tabla de tiempos e interprete por qué la función tarda tando tiempo.
+   * El alto consumo de tiempo de respuesta, puede deberse a que actualmente estamos trabajando con una máquina virtual que posee unas características de gama baja, es decir, posee un hardware insuficiente que no le permite realizar tareas complejar como calcular la serie de Fibonacci para un número grande.
+
+
+   ![image](https://user-images.githubusercontent.com/90571387/200719211-238f0b3b-5d37-4864-9ba7-397a6193f51e.png)
+
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
+   * La función consume esa cantidad de cpu, porque debe almacenar números en cada iteración del ciclo for, estos numeros van aumentando en tamaño a una tasa de incremento constante, lo cual implica que la cpu debe invertir más recursos a medida que va aumentando de tamaño el número.
+   ![image](https://user-images.githubusercontent.com/90571387/200719509-55caaa3a-e307-4044-b178-8d3677682267.png)
+
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
+    ![image](https://user-images.githubusercontent.com/90571387/200719610-1d4db15f-a505-458e-9568-3cda0acf7be0.png)
     * Si hubo fallos documentelos y explique.
+      * Los fallos pueden causarse por timeouts, debido a que el tiempo de espera, puede ser un poco tardado.
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
+   * B1ls es la máquina más basica que tien azure, la cual solo cuenta con 1 vcpu y 0.5 Gb de memoria RAM, por otro lado B2ms, posee mayor capacidad, contando con 2vcpu y 8 Gb de menoria RAM, que le permite manejar de una manera más adecuada los recursos, con la capacidad de usar una mayor cantidad de entradas y obtener una mejor disponibilidad en comparación a la B1ls.
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
+   Aumentar la capacidad de la máquina, nos permite disminuir el tiempo que toma calcular un número n en la serie de Fibonacci, por lo tanto el tiempo de respuesta será menor en la medida en que el hardware sea mejor, sin embargo, esto no garantiza que las peticiones siempre sean exitosas, lo cual requerirá otro tipo de soluciones.
+
+
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
+   No se genera un efecto negativo en el objetivo de la práctica, pues se hizo con el fín de mejorar el rendimiento del sistema a la hora de calcular la serie de fibonacci para un número aleatorio.
+
+   Por otro lado, el escalamiento genera un costo adicional que es proporcional al tamaño que va aumentando la VM.
+
+
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
-
+   ![image](https://user-images.githubusercontent.com/90571387/200720790-ec8cd9d4-4728-4197-b3de-0a34c1ccd0cb.png)
+   ![image](https://user-images.githubusercontent.com/90571387/200720854-95e1590b-f419-4a48-924a-8d1f42f4b814.png)
+   ![image](https://user-images.githubusercontent.com/90571387/200720927-0c3c4d2f-9e33-40b5-91ab-9ec976a25a0b.png)
+   * Como podemos ver, si hubo una mejoria, ya que de los scripts ejecutados, ninguno fue fallido.
+  
 ### Parte 2 - Escalabilidad horizontal
 
 #### Crear el Balanceador de Carga
