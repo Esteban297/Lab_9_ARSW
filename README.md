@@ -25,11 +25,17 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 ![Imágen 1](images/part1/part1-vm-basic-config.png)
 
+![image](https://user-images.githubusercontent.com/90571387/200700370-6d8a99c9-d34f-4e1b-8ddd-b6abfd01e202.png)
+
 2. Para conectarse a la VM use el siguiente comando, donde las `x` las debe remplazar por la IP de su propia VM (Revise la sección "Connect" de la virtual machine creada para tener una guía más detallada).
 
     `ssh scalability_lab@xxx.xxx.xxx.xxx`
+    
+   ![image](https://user-images.githubusercontent.com/90571387/200700461-441da879-16cd-42e8-a258-2a8c9f97ef8d.png)
+
 
 3. Instale node, para ello siga la sección *Installing Node.js and npm using NVM* que encontrará en este [enlace](https://linuxize.com/post/how-to-install-node-js-on-ubuntu-18.04/).
+   ![image](https://user-images.githubusercontent.com/90571387/200700489-5f92c27b-f96c-4bf3-a479-e8cb654552e0.png)
 4. Para instalar la aplicación adjunta al Laboratorio, suba la carpeta `FibonacciApp` a un repositorio al cual tenga acceso y ejecute estos comandos dentro de la VM:
 
     `git clone <your_repo>`
@@ -37,33 +43,91 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
     `cd <your_repo>/FibonacciApp`
 
     `npm install`
+    
+ 
+    ![image](https://user-images.githubusercontent.com/90571387/200700566-b6f635d3-122e-46ff-b7f4-7eaf714c16ec.png)
+
+
 
 5. Para ejecutar la aplicación puede usar el comando `npm FibinacciApp.js`, sin embargo una vez pierda la conexión ssh la aplicación dejará de funcionar. Para evitar ese compartamiento usaremos *forever*. Ejecute los siguientes comando dentro de la VM.
 
     ` node FibonacciApp.js`
+   ![image](https://user-images.githubusercontent.com/90571387/200700712-7da6b51a-63d0-4abd-acdf-7c27785a4201.png)
 
+   
 6. Antes de verificar si el endpoint funciona, en Azure vaya a la sección de *Networking* y cree una *Inbound port rule* tal como se muestra en la imágen. Para verificar que la aplicación funciona, use un browser y user el endpoint `http://xxx.xxx.xxx.xxx:3000/fibonacci/6`. La respuesta debe ser `The answer is 8`.
 
 ![](images/part1/part1-vm-3000InboudRule.png)
+  
+
+![image](https://user-images.githubusercontent.com/90571387/200700832-66bcb745-0ace-48ce-a248-39df994962d1.png)
+
 
 7. La función que calcula en enésimo número de la secuencia de Fibonacci está muy mal construido y consume bastante CPU para obtener la respuesta. Usando la consola del Browser documente los tiempos de respuesta para dicho endpoint usando los siguintes valores:
+
     * 1000000
+   
+      - Tiempo: 2,9 m
+      ![image](https://user-images.githubusercontent.com/90571387/200700932-5e6443ad-08a5-4357-9225-ff93bc0b3a7f.png)
+
     * 1010000
+    
+      - Tiempo 3,4 m
+      ![image](https://user-images.githubusercontent.com/90571387/200704757-766d6068-fce6-4f2f-92f7-9fb4c202d397.png)
+
     * 1020000
+    
+      - Tiempo 3,1 m
+      ![image](https://user-images.githubusercontent.com/90571387/200704813-45febbea-39ac-4df1-83be-6b0f4b511607.png)
+
     * 1030000
+    
+      - Tiempo 3,2 m
+      ![image](https://user-images.githubusercontent.com/90571387/200704866-5044dfae-73aa-407e-8903-7d6c6929c1b5.png)
+
     * 1040000
+      
+      - Tiempo 3,2 m
+      ![image](https://user-images.githubusercontent.com/90571387/200704906-91da77ae-5494-42ee-b5ab-89192b0c7e9a.png)
+
     * 1050000
+    
+      - Tiempo 3,3 m
+      ![image](https://user-images.githubusercontent.com/90571387/200704941-8ad81ba0-5573-45b8-b083-ea652fedf86b.png)
+
     * 1060000
+    
+      - Tiempo 3,4 m
+      ![image](https://user-images.githubusercontent.com/90571387/200704973-c8a69249-6521-494b-bdc7-cee32f3ccaf2.png)
+
     * 1070000
+    
+      - Tiempo 3,5 m
+      ![image](https://user-images.githubusercontent.com/90571387/200705014-09fc97f3-1a26-4f87-8d36-ef94f532ed35.png)
+
     * 1080000
-    * 1090000    
+     
+      - Tiempo 3,4 m
+      ![image](https://user-images.githubusercontent.com/90571387/200705037-12001311-d2de-425d-a79e-0a24a67832b1.png)
+
+    * 1090000   
+    
+      - Tiempo 9,5 m
+      ![image](https://user-images.githubusercontent.com/90571387/200705087-5be7014e-f8bc-4d7f-9913-139bb95ab225.png)
+
 
 8. Dírijase ahora a Azure y verifique el consumo de CPU para la VM. (Los resultados pueden tardar 5 minutos en aparecer).
 
 ![Imágen 2](images/part1/part1-vm-cpu.png)
 
+![image](https://user-images.githubusercontent.com/90571387/200705679-56be26e8-fb59-4b40-bfc5-750998e12769.png)
+
+
 9. Ahora usaremos Postman para simular una carga concurrente a nuestro sistema. Siga estos pasos.
     * Instale newman con el comando `npm install newman -g`. Para conocer más de Newman consulte el siguiente [enlace](https://learning.getpostman.com/docs/postman/collection-runs/command-line-integration-with-newman/).
+   
+   ![image](https://user-images.githubusercontent.com/90571387/200705796-ee59a3b8-5b6e-4589-bf1a-979233ae0855.png)
+
     * Diríjase hasta la ruta `FibonacciApp/postman` en una maquina diferente a la VM.
     * Para el archivo `[ARSW_LOAD-BALANCING_AZURE].postman_environment.json` cambie el valor del parámetro `VM1` para que coincida con la IP de su VM.
     * Ejecute el siguiente comando.
