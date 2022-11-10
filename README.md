@@ -244,11 +244,15 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 5. Adjunte imágen del consumo de CPU de la VM e interprete por qué la función consume esa cantidad de CPU.
    * La función consume esa cantidad de cpu, porque debe almacenar números en cada iteración del ciclo for, estos numeros van aumentando en tamaño a una tasa de incremento constante, lo cual implica que la cpu debe invertir más recursos a medida que va aumentando de tamaño el número.
+   
+   
    ![image](https://user-images.githubusercontent.com/90571387/200719509-55caaa3a-e307-4044-b178-8d3677682267.png)
 
 6. Adjunte la imagen del resumen de la ejecución de Postman. Interprete:
     * Tiempos de ejecución de cada petición.
+    
     ![image](https://user-images.githubusercontent.com/90571387/200719610-1d4db15f-a505-458e-9568-3cda0acf7be0.png)
+    
     * Si hubo fallos documentelos y explique.
       * Los fallos pueden causarse por timeouts, debido a que el tiempo de espera, puede ser un poco tardado.
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
@@ -264,8 +268,11 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
+
    ![image](https://user-images.githubusercontent.com/90571387/200985092-1874b9f4-fadd-4c67-89ae-f077075c4354.png)
-   En la tabla anterior, podemos evidencias que hubo una mejoría del 86% aproximadamente, lo cual es una cifra muy grande, podemos concluir que con el escalamiento vertical, obtuvimos resultados favorables-
+   
+   En la tabla anterior, podemos evidencias que hubo una mejoría del 86% aproximadamente, lo cual es una cifra muy grande, podemos concluir que con el escalamiento vertical, obtuvimos resultados favorables
+  
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
    ![image](https://user-images.githubusercontent.com/90571387/200720790-ec8cd9d4-4728-4197-b3de-0a34c1ccd0cb.png)
    ![image](https://user-images.githubusercontent.com/90571387/200720854-95e1590b-f419-4a48-924a-8d1f42f4b814.png)
