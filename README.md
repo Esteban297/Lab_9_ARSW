@@ -254,16 +254,17 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 7. ¿Cuál es la diferencia entre los tamaños `B2ms` y `B1ls` (no solo busque especificaciones de infraestructura)?
    * B1ls es la máquina más basica que tien azure, la cual solo cuenta con 1 vcpu y 0.5 Gb de memoria RAM, por otro lado B2ms, posee mayor capacidad, contando con 2vcpu y 8 Gb de menoria RAM, que le permite manejar de una manera más adecuada los recursos, con la capacidad de usar una mayor cantidad de entradas y obtener una mejor disponibilidad en comparación a la B1ls.
 8. ¿Aumentar el tamaño de la VM es una buena solución en este escenario?, ¿Qué pasa con la FibonacciApp cuando cambiamos el tamaño de la VM?
-   Aumentar la capacidad de la máquina, nos permite disminuir el tiempo que toma calcular un número n en la serie de Fibonacci, por lo tanto el tiempo de respuesta será menor en la medida en que el hardware sea mejor, sin embargo, esto no garantiza que las peticiones siempre sean exitosas, lo cual requerirá otro tipo de soluciones.
+   * Aumentar la capacidad de la máquina, nos permite disminuir el tiempo que toma calcular un número n en la serie de Fibonacci, por lo tanto el tiempo de respuesta será menor en la medida en que el hardware sea mejor, sin embargo, esto no garantiza que las peticiones siempre sean exitosas, lo cual requerirá otro tipo de soluciones.
 
 
 9. ¿Qué pasa con la infraestructura cuando cambia el tamaño de la VM? ¿Qué efectos negativos implica?
-   No se genera un efecto negativo en el objetivo de la práctica, pues se hizo con el fín de mejorar el rendimiento del sistema a la hora de calcular la serie de fibonacci para un número aleatorio.
+   * No se genera un efecto negativo en el objetivo de la práctica, pues se hizo con el fín de mejorar el rendimiento del sistema a la hora de calcular la serie de fibonacci para un número aleatorio.
 
    Por otro lado, el escalamiento genera un costo adicional que es proporcional al tamaño que va aumentando la VM.
 
 
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
+Lue
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
    ![image](https://user-images.githubusercontent.com/90571387/200720790-ec8cd9d4-4728-4197-b3de-0a34c1ccd0cb.png)
    ![image](https://user-images.githubusercontent.com/90571387/200720854-95e1590b-f419-4a48-924a-8d1f42f4b814.png)
@@ -513,14 +514,30 @@ newman run ARSW_LOAD-BALANCING_AZURE.postman_collection.json -e [ARSW_LOAD-BALAN
 **Preguntas**
 
 * ¿Cuáles son los tipos de balanceadores de carga en Azure y en qué se diferencian?, ¿Qué es SKU, qué tipos hay y en qué se diferencian?, ¿Por qué el balanceador de carga necesita una IP pública?
+   * Actualmente existen dos tipos de balanceo de cargas, por un lado tenemos el balanceo de carga público, el cual se encarga de proveer conexiones de salida para las maquinas virtuales que conforman el backend, esto es posible mediante la traducción de direcciones IP privadas a públicas, y por otro lado tenemos el balanceador de cargas interno o privado, el cual se encarga de balacear las cargas dentro de la red interna de nuestra red virtual.
+   * SKU en microsoft azure, son los niveles de recursos que están disponibles para los clientes dependiendo de la tarea que se va a realizar, estos se clasifican en cuatro categorias las cuales son: Free, Basic, Standard y Storage Optimized. Cada una de ellas, determina el monto que el cliente debe pagar a la hora de usar el servicio.
+   * Cada categoría brinda un nivel de capacidad diferente y se eligen dependiendo del tamaño del proyecto que se quiere desplegar.
+   * El balanceador de carga requiere una ip pública, porque es ahí donde llegan todas las peticiones que se realizan, de ahí se distribuye a las demás máquinas para que realicen en cálculo y así retornar la respuesta.
 * ¿Cuál es el propósito del *Backend Pool*?
+   * Es una agrupación lógica de sus instancias de aplicaciones en todo el mundo que reciben el mismo tráfico y responden con el comportamiento esperado
+   * Un backend pool define cómo se deben evaluar los diferentes backends a través de sondas de estado. También define cómo se produce el equilibrio de carga entre ellos.
 * ¿Cuál es el propósito del *Health Probe*?
+   * El Health Probe, se encarga de determinar el estado de cada una de las máquinas que conforman el backend pool mediante peticiones de prueba, esto con el fin de ajustar el balanceo de carga entre las diferentes instancias.
 * ¿Cuál es el propósito de la *Load Balancing Rule*? ¿Qué tipos de sesión persistente existen, por qué esto es importante y cómo puede afectar la escalabilidad del sistema?.
+   * El propósito de la Load balancing rule es definir como se distribuye el tráfico a las máquinas virtuales con el fín de definir el puerto por la cual a escuchar al front end, esto es importante, ya que el frontend puede enviar trafico de red a las máquinas virtuales que están en el backend con balanceo de carga y evitar errores en las respuestas a las peticiones.
 * ¿Qué es una *Virtual Network*? ¿Qué es una *Subnet*? ¿Para qué sirven los *address space* y *address range*?
+   * Una Virtual Network es una representación de una red propia en la nube. Es un aislamiento lógico de la nube de Azure dedicada a la suscripción del usuario. Puede utilizar VNets para aprovisionar y gestionar redes virtuales privadas (VPNs) en Azure y, opcionalmente, enlazar las VNets con otras VNets en Azure, o con una infraestructura de TI local.
+   * Una Subnet es un rango de direcciones lógicas. Es una buena estrategia si se tiene una red de gran tamaño ya que al dividirla en subredes puede reducir el tamaño de dominios de broadcast y hacerla más fácil de administrar.
+   * Address space: al crear una red virtual, debe especificar un espacio de direcciones IP privadas personalizadas utilizando direcciones públicas y privadas (RFC 1918). Azure asigna recursos en una red virtual a una dirección IP privada desde el espacio de direcciones que asigne. Por ejemplo, si implementa una VM en una red virtual con espacio de direcciones, 10.0.0.0/16, a la VM se le asignará una IP privada como 10.0.0.4.
+   * Address range es el rango de direcciones ip disponibles para poder configurar la red virtual, por defecto azure asigna una mascara de red de /28 o /16 y se puede realizar subredes con diferentes rangos, dentro del rango maximo
 * ¿Qué son las *Availability Zone* y por qué seleccionamos 3 diferentes zonas?. ¿Qué significa que una IP sea *zone-redundant*?
+   * Availability Zone es una oferta que se realiza para tener alta disponibilidad ya que potege sus aplicaciones y datos a fallas que puedan ocurrir. las zonas de disponibilidad son ubicaicones ficticias dentro de una region en azure.
 * ¿Cuál es el propósito del *Network Security Group*?
+   * La Network Security Group se ecarga de restringir el tráfico que llega a las máquinas virtuales, esto con el fin de fortalecer el nivel de seguridad y regular las peticiones que llegan al sistema
 * Informe de newman 1 (Punto 2)
+   * Como lo pudimos ver en la documentación, el sistema se demoró en responder las peticiones en promedio 2 min 53 seg, de las cuales, solo se presentaban entre 1 y 3 fallas. En comparación con el sistema de 3 máquinas, este se demoró menos tiempo en retornar los resultados al cliente.
 * Presente el Diagrama de Despliegue de la solución.
+   * ![image](https://user-images.githubusercontent.com/90571387/200982300-e683d2a4-5dee-4a21-a401-c06f1f5b25a2.png)
 
 
 
