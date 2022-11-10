@@ -264,7 +264,8 @@ Cuando un conjunto de usuarios consulta un enésimo número (superior a 1000000)
 
 
 10. ¿Hubo mejora en el consumo de CPU o en los tiempos de respuesta? Si/No ¿Por qué?
-Lue
+   ![image](https://user-images.githubusercontent.com/90571387/200985092-1874b9f4-fadd-4c67-89ae-f077075c4354.png)
+   En la tabla anterior, podemos evidencias que hubo una mejoría del 86% aproximadamente, lo cual es una cifra muy grande, podemos concluir que con el escalamiento vertical, obtuvimos resultados favorables-
 11. Aumente la cantidad de ejecuciones paralelas del comando de postman a `4`. ¿El comportamiento del sistema es porcentualmente mejor?
    ![image](https://user-images.githubusercontent.com/90571387/200720790-ec8cd9d4-4728-4197-b3de-0a34c1ccd0cb.png)
    ![image](https://user-images.githubusercontent.com/90571387/200720854-95e1590b-f419-4a48-924a-8d1f42f4b814.png)
